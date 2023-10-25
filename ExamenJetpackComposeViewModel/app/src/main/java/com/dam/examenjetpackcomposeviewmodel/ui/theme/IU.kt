@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -29,156 +30,62 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.dam.examenjetpackcomposeviewmodel.R
+import com.dam.examenjetpackcomposeviewmodel.dataclass
+import com.dam.examenjetpackcomposeviewmodel.miViewModel
 
 
-
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun IU() {
-    var num by remember { mutableStateOf(0) }
-    var textoBoton by remember { mutableStateOf("Start") }
 
-    Column(
-        modifier = Modifier
-            .size(32.dp)
-            .padding(32.dp),
-        verticalArrangement = Arrangement.spacedBy(32.dp)
-    ) {
-        Text(
-            text = "Ronda",
-            fontSize = 25.sp,
-        )
+fun IU(miViewModel:miViewModel) {
 
-        if (num > 10) {
+    Column {
+
+        if ( miViewModel.getNombre().length > 3) {
             Text(
-                text = "$num",
-                color = Color.DarkGray,
-                fontSize = 35.sp,
-            )
-        } else {
-            Text(
-                text = "$num",
-                color = Color.DarkGray,
-                fontSize = 25.sp,
-            )
-            Column (
-                modifier = Modifier
-                    .size(16.dp)
-                    .padding(64.dp),
-                verticalArrangement = Arrangement.spacedBy(32.dp)
-            )
-            {
+                text = "Nombre: ${ miViewModel.getNombre()}!",
+                fontSize = 24.sp,
 
-            }
+                )
+            Modifier.padding(18.dp)
         }
-
-        // Fila 1: Botones Azul y Verde
-        Row(
-            modifier = Modifier
-                .fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            // Botón Azul
-            Button(
-                onClick = { Log.d("Tag", "Estoy en Onclick 1") },
-                modifier = Modifier
-                    .size(64.dp)
-                    .background(Color.Blue),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.Transparent,
-                    contentColor = Color.White
-                )
-            ) {
-
-            }
-
-            // Botón Verde
-            Button(
-                onClick = { Log.d("Tag", "Estoy en Onclick 2") },
-                modifier = Modifier
-                    .size(64.dp)
-                    .background(Color.Green),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.Transparent,
-                    contentColor = Color.White
-                )
-            ) {
-
-            }
-        }
-
-        // Fila 2: Botones Rojo y Amarillo
-        Row(
-            modifier = Modifier
-                .fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(16.dp)
-        ) {
-            // Botón Rojo
-            Button(
-                onClick = { Log.d("Tag", "Estoy en Onclick 3") },
-                modifier = Modifier
-                    .size(64.dp)
-                    .background(Color.Red),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.Transparent,
-                    contentColor = Color.White
-                )
-            ) {
-
-            }
-
-            // Botón Amarillo
-            Button(
-                onClick = { Log.d("Tag", "Estoy en Onclick 4") },
-                modifier = Modifier
-                    .size(64.dp)
-                    .background(Color.Yellow),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.Transparent,
-                    contentColor = Color.White
-                )
-            ) {
-
-            }
-        }
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(16.dp)
+        OutlinedTextField(
+            value = miViewModel.getNombre(),
+            onValueChange = {
+              miViewModel.misDatos.namee.value = it
+            },
+            label = { Text(text = "Name") }
         )
-        {
-        Button(
-            onClick = { textoBoton = "Reset" },
-            modifier = Modifier
 
 
-                .height(64.dp)
-        )
-                {
-                    androidx.compose.material3.Text(textoBoton)
-                }
-
-
-            Button(
-                onClick = { num++ },
-                modifier = Modifier
-                    .height(64.dp)
-                    .background(Color.Cyan),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = Color.Transparent,
-                    contentColor = Color.White
-                )
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable._04729),
-                    contentDescription = "Sumar una ronda",
-                    modifier = Modifier
-                        .size(48.dp)
-
-                )
-            }
-
-
-
-        }
 
     }
+
+    Column {
+        Text(
+            text = "Numero aleatorio: ${miViewModel.getNumero()}"+"\n Lista de nums: ${miViewModel.getLista()}" ,
+            modifier = Modifier.padding(100.dp),
+            color = Color.DarkGray
+        )
+        Button(
+            onClick = {
+                miViewModel.funcionRandom()
+                Log.d("Tag", "Estoy en Onclick")
+            },
+            modifier = Modifier.padding(64.dp)
+
+        )
+        {
+            Image(
+                painter = painterResource(id = R.drawable._04729),
+
+                contentDescription = "Generar numeros",
+                Modifier.padding(8.dp)
+
+            )
+        }
+    }
+
 }
+
+
